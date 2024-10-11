@@ -1,5 +1,5 @@
 
-package net.corrinedev.gundurability.network;
+package com.corrinedev.gundurability.network;
 
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -11,9 +11,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.core.BlockPos;
 
-import net.corrinedev.gundurability.world.inventory.RepairGUIMenu;
-import net.corrinedev.gundurability.procedures.ButtonRepairProcedure;
-import net.corrinedev.gundurability.GundurabilityMod;
+import com.corrinedev.gundurability.world.inventory.RepairGUIMenu;
+import com.corrinedev.gundurability.procedures.ButtonRepairProcedure;
+import com.corrinedev.gundurability.Gundurability;
 
 import java.util.function.Supplier;
 import java.util.HashMap;
@@ -70,6 +70,6 @@ public class RepairGUIButtonMessage {
 
 	@SubscribeEvent
 	public static void registerMessage(FMLCommonSetupEvent event) {
-		GundurabilityMod.addNetworkMessage(RepairGUIButtonMessage.class, RepairGUIButtonMessage::buffer, RepairGUIButtonMessage::new, RepairGUIButtonMessage::handler);
+		Gundurability.addNetworkMessage(RepairGUIButtonMessage.class, RepairGUIButtonMessage::buffer, RepairGUIButtonMessage::new, RepairGUIButtonMessage::handler);
 	}
 }

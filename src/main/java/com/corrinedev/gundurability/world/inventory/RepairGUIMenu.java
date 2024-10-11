@@ -1,5 +1,5 @@
 
-package net.corrinedev.gundurability.world.inventory;
+package com.corrinedev.gundurability.world.inventory;
 
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -19,8 +19,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.core.BlockPos;
 
-import net.corrinedev.gundurability.init.GundurabilityModMenus;
-import net.corrinedev.gundurability.init.GundurabilityModItems;
+import com.corrinedev.gundurability.init.GundurabilityModMenus;
+import com.corrinedev.gundurability.init.GundurabilityModItems;
 
 import java.util.function.Supplier;
 import java.util.Map;

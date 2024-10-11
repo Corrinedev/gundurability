@@ -2,7 +2,7 @@
 /*
  *	MCreator note: This file will be REGENERATED on each build.
  */
-package net.corrinedev.gundurability.init;
+package com.corrinedev.gundurability.init;
 
 import org.lwjgl.glfw.GLFW;
 
@@ -15,9 +15,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.KeyMapping;
 
-import net.corrinedev.gundurability.network.InspectDurabilityMessage;
-import net.corrinedev.gundurability.network.DurabilityMessage;
-import net.corrinedev.gundurability.GundurabilityMod;
+import com.corrinedev.gundurability.network.InspectDurabilityMessage;
+import com.corrinedev.gundurability.network.DurabilityMessage;
+import com.corrinedev.gundurability.Gundurability;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = {Dist.CLIENT})
 public class GundurabilityModKeyMappings {
@@ -28,7 +28,7 @@ public class GundurabilityModKeyMappings {
 		public void setDown(boolean isDown) {
 			super.setDown(isDown);
 			if (isDownOld != isDown && isDown) {
-				GundurabilityMod.PACKET_HANDLER.sendToServer(new InspectDurabilityMessage(0, 0));
+				Gundurability.PACKET_HANDLER.sendToServer(new InspectDurabilityMessage(0, 0));
 				InspectDurabilityMessage.pressAction(Minecraft.getInstance().player, 0, 0);
 			}
 			isDownOld = isDown;
@@ -41,7 +41,7 @@ public class GundurabilityModKeyMappings {
 		public void setDown(boolean isDown) {
 			super.setDown(isDown);
 			if (isDownOld != isDown && isDown) {
-				GundurabilityMod.PACKET_HANDLER.sendToServer(new DurabilityMessage(0, 0));
+				Gundurability.PACKET_HANDLER.sendToServer(new DurabilityMessage(0, 0));
 				DurabilityMessage.pressAction(Minecraft.getInstance().player, 0, 0);
 			}
 			isDownOld = isDown;

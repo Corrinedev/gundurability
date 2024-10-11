@@ -1,4 +1,4 @@
-package net.corrinedev.gundurability.procedures;
+package com.corrinedev.gundurability.procedures;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.LivingEntity;

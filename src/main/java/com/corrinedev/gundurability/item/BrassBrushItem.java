@@ -1,5 +1,5 @@
 
-package net.corrinedev.gundurability.item;
+package com.corrinedev.gundurability.item;
 
 import net.minecraft.world.level.Level;
 import net.minecraft.world.item.TooltipFlag;
@@ -12,13 +12,10 @@ import java.util.List;
 
 public class BrassBrushItem extends Item {
 	public BrassBrushItem() {
-		super(new Item.Properties().durability(16).rarity(Rarity.COMMON));
+		super(new Properties().durability(16).rarity(Rarity.COMMON));
 	}
 
-	@Override
-	public int getUseDuration(ItemStack itemstack) {
-		return 40;
-	}
+
 
 	@Override
 	public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag flag) {

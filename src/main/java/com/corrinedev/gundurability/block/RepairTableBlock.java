@@ -1,5 +1,5 @@
 
-package net.corrinedev.gundurability.block;
+package com.corrinedev.gundurability.block;
 
 import net.minecraftforge.network.NetworkHooks;
 
@@ -32,7 +32,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
-import net.corrinedev.gundurability.world.inventory.RepairGUIMenu;
+import com.corrinedev.gundurability.world.inventory.RepairGUIMenu;
 
 import io.netty.buffer.Unpooled;
 
@@ -40,7 +40,7 @@ public class RepairTableBlock extends Block {
 	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
 	public RepairTableBlock() {
-		super(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD).strength(1f, 10f).noOcclusion().isRedstoneConductor((bs, br, bp) -> false));
+		super(Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD).strength(1f, 10f).noOcclusion().isRedstoneConductor((bs, br, bp) -> false));
 		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
 	}
 

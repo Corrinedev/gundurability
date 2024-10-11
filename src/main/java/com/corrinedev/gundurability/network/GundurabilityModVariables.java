@@ -1,4 +1,4 @@
-package net.corrinedev.gundurability.network;
+package com.corrinedev.gundurability.network;
 
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.NetworkEvent;
@@ -25,7 +25,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
 import net.minecraft.client.Minecraft;
 
-import net.corrinedev.gundurability.GundurabilityMod;
+import com.corrinedev.gundurability.Gundurability;
 
 import java.util.function.Supplier;
 
@@ -33,7 +33,7 @@ import java.util.function.Supplier;
 public class GundurabilityModVariables {
 	@SubscribeEvent
 	public static void init(FMLCommonSetupEvent event) {
-		GundurabilityMod.addNetworkMessage(PlayerVariablesSyncMessage.class, PlayerVariablesSyncMessage::buffer, PlayerVariablesSyncMessage::new, PlayerVariablesSyncMessage::handler);
+		Gundurability.addNetworkMessage(PlayerVariablesSyncMessage.class, PlayerVariablesSyncMessage::buffer, PlayerVariablesSyncMessage::new, PlayerVariablesSyncMessage::handler);
 	}
 
 	@SubscribeEvent
@@ -107,7 +107,7 @@ public class GundurabilityModVariables {
 
 		public void syncPlayerVariables(Entity entity) {
 			if (entity instanceof ServerPlayer serverPlayer)
-				GundurabilityMod.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new PlayerVariablesSyncMessage(this));
+				Gundurability.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new PlayerVariablesSyncMessage(this));
 		}
 
 		public Tag writeNBT() {

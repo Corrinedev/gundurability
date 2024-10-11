@@ -1,6 +1,7 @@
 
-package net.corrinedev.gundurability.command;
+package com.corrinedev.gundurability.command;
 
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import org.checkerframework.checker.units.qual.s;
 
 import net.minecraftforge.fml.common.Mod;
@@ -15,7 +16,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.Commands;
 
-import net.corrinedev.gundurability.procedures.DurabilitySetProcedure;
+import com.corrinedev.gundurability.procedures.DurabilitySetProcedure;
 
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 
@@ -24,7 +25,7 @@ public class RestoreDurabilityCommand {
 	@SubscribeEvent
 	public static void registerCommand(RegisterCommandsEvent event) {
 		event.getDispatcher().register(
-				Commands.literal("setdurability").requires(s -> s.hasPermission(4)).then(Commands.argument("player", EntityArgument.player()).then(Commands.argument("durability", DoubleArgumentType.doubleArg(0, 2000)).executes(arguments -> {
+				Commands.literal("setdurability").requires(s -> s.hasPermission(4)).then(Commands.argument("player", EntityArgument.player()).then(Commands.argument("durability", IntegerArgumentType.integer(0, 2000)).executes(arguments -> {
 					Level world = arguments.getSource().getUnsidedLevel();
 					double x = arguments.getSource().getPosition().x();
 					double y = arguments.getSource().getPosition().y();

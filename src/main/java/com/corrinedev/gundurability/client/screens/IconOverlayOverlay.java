@@ -1,5 +1,5 @@
 
-package net.corrinedev.gundurability.client.screens;
+package com.corrinedev.gundurability.client.screens;
 
 import org.checkerframework.checker.units.qual.h;
 
@@ -15,12 +15,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.Minecraft;
 
-import net.corrinedev.gundurability.procedures.YellowIconProcedure;
-import net.corrinedev.gundurability.procedures.RedIconProcedure;
-import net.corrinedev.gundurability.procedures.OrangeIconProcedure;
-import net.corrinedev.gundurability.procedures.JamIconProcedure;
-import net.corrinedev.gundurability.procedures.IconOverlayDisplayOverlayIngameProcedure;
-import net.corrinedev.gundurability.procedures.GreenIconProcedure;
+import com.corrinedev.gundurability.procedures.YellowIconProcedure;
+import com.corrinedev.gundurability.procedures.RedIconProcedure;
+import com.corrinedev.gundurability.procedures.OrangeIconProcedure;
+import com.corrinedev.gundurability.procedures.JamIconProcedure;
+import com.corrinedev.gundurability.procedures.IconOverlayDisplayOverlayIngameProcedure;
+import com.corrinedev.gundurability.procedures.GreenIconProcedure;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.platform.GlStateManager;

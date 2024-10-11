@@ -1,11 +1,11 @@
-package net.corrinedev.gundurability.procedures;
+package com.corrinedev.gundurability.procedures;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.effect.MobEffectInstance;
 
-import net.corrinedev.gundurability.init.GundurabilityModMobEffects;
+import com.corrinedev.gundurability.init.GundurabilityModMobEffects;
 
 public class DurabilityOnKeyPressedProcedure {
 	public static void execute(Entity entity) {

@@ -1,5 +1,5 @@
 
-package net.corrinedev.gundurability.potion;
+package com.corrinedev.gundurability.potion;
 
 import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 

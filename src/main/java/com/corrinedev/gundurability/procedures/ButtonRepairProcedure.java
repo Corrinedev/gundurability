@@ -1,4 +1,4 @@
-package net.corrinedev.gundurability.procedures;
+package com.corrinedev.gundurability.procedures;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.inventory.Slot;
@@ -6,7 +6,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.util.RandomSource;
 
-import net.corrinedev.gundurability.init.GundurabilityModItems;
+import com.corrinedev.gundurability.init.GundurabilityModItems;
 
 import java.util.function.Supplier;
 import java.util.Map;

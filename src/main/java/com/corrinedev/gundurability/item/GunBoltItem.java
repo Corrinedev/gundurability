@@ -1,5 +1,5 @@
 
-package net.corrinedev.gundurability.item;
+package com.corrinedev.gundurability.item;
 
 import net.minecraft.world.level.Level;
 import net.minecraft.world.item.TooltipFlag;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class GunBoltItem extends Item {
 	public GunBoltItem() {
-		super(new Item.Properties().stacksTo(1).rarity(Rarity.COMMON));
+		super(new Properties().stacksTo(1).rarity(Rarity.COMMON));
 	}
 
 	@Override

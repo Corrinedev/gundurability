@@ -1,9 +1,9 @@
-package net.corrinedev.gundurability.procedures;
+package com.corrinedev.gundurability.procedures;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Entity;
 
-import net.corrinedev.gundurability.init.GundurabilityModMobEffects;
+import com.corrinedev.gundurability.init.GundurabilityModMobEffects;
 
 public class DurabilityNoNameDisplayProcedure {
 	public static boolean execute(Entity entity) {

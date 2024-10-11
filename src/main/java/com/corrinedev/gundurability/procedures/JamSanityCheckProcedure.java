@@ -1,4 +1,4 @@
-package net.corrinedev.gundurability.procedures;
+package com.corrinedev.gundurability.procedures;
 
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.fml.common.Mod;

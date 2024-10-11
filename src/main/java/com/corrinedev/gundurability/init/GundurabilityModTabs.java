@@ -2,7 +2,7 @@
 /*
  *    MCreator note: This file will be REGENERATED on each build.
  */
-package net.corrinedev.gundurability.init;
+package com.corrinedev.gundurability.init;
 
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -12,10 +12,10 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.network.chat.Component;
 import net.minecraft.core.registries.Registries;
 
-import net.corrinedev.gundurability.GundurabilityMod;
+import com.corrinedev.gundurability.Gundurability;
 
 public class GundurabilityModTabs {
-	public static final DeferredRegister<CreativeModeTab> REGISTRY = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, GundurabilityMod.MODID);
+	public static final DeferredRegister<CreativeModeTab> REGISTRY = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Gundurability.MODID);
 	public static final RegistryObject<CreativeModeTab> TACZ_DURABILITY = REGISTRY.register("tacz_durability",
 			() -> CreativeModeTab.builder().title(Component.translatable("item_group.gundurability.tacz_durability")).icon(() -> new ItemStack(GundurabilityModItems.BRASS_BRUSH.get())).displayItems((parameters, tabData) -> {
 				tabData.accept(GundurabilityModItems.WD_40.get());

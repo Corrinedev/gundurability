@@ -1,5 +1,5 @@
 
-package net.corrinedev.gundurability.network;
+package com.corrinedev.gundurability.network;
 
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -10,8 +10,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.network.FriendlyByteBuf;
 
-import net.corrinedev.gundurability.procedures.InspectDurabilityOnKeyPressedProcedure;
-import net.corrinedev.gundurability.GundurabilityMod;
+import com.corrinedev.gundurability.procedures.InspectDurabilityOnKeyPressedProcedure;
+import com.corrinedev.gundurability.Gundurability;
 
 import java.util.function.Supplier;
 
@@ -58,6 +58,6 @@ public class InspectDurabilityMessage {
 
 	@SubscribeEvent
 	public static void registerMessage(FMLCommonSetupEvent event) {
-		GundurabilityMod.addNetworkMessage(InspectDurabilityMessage.class, InspectDurabilityMessage::buffer, InspectDurabilityMessage::new, InspectDurabilityMessage::handler);
+		Gundurability.addNetworkMessage(InspectDurabilityMessage.class, InspectDurabilityMessage::buffer, InspectDurabilityMessage::new, InspectDurabilityMessage::handler);
 	}
 }

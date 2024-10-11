@@ -1,5 +1,5 @@
 
-package net.corrinedev.gundurability.item;
+package com.corrinedev.gundurability.item;
 
 import net.minecraft.world.level.Level;
 import net.minecraft.world.item.UseAnim;
@@ -13,18 +13,10 @@ import java.util.List;
 
 public class WD40Item extends Item {
 	public WD40Item() {
-		super(new Item.Properties().durability(8).rarity(Rarity.COMMON));
+		super(new Properties().durability(8).rarity(Rarity.COMMON));
 	}
 
-	@Override
-	public UseAnim getUseAnimation(ItemStack itemstack) {
-		return UseAnim.BOW;
-	}
 
-	@Override
-	public int getUseDuration(ItemStack itemstack) {
-		return 10;
-	}
 
 	@Override
 	public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag flag) {

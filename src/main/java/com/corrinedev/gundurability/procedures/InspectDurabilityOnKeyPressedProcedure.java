@@ -1,4 +1,4 @@
-package net.corrinedev.gundurability.procedures;
+package com.corrinedev.gundurability.procedures;
 
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -9,8 +9,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.network.chat.Component;
 
-import net.corrinedev.gundurability.init.GundurabilityModAttributes;
-import net.corrinedev.gundurability.GundurabilityMod;
+import com.corrinedev.gundurability.init.GundurabilityModAttributes;
+import com.corrinedev.gundurability.Gundurability;
 
 public class InspectDurabilityOnKeyPressedProcedure {
 	public static void execute(LevelAccessor world, Entity entity) {
@@ -18,7 +18,7 @@ public class InspectDurabilityOnKeyPressedProcedure {
 			return;
 		if ((ForgeRegistries.ITEMS.getKey((entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getItem()).toString()).equals("tacz:modern_kinetic_gun")
 				&& (entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().getBoolean("Jammed") == true) {
-			GundurabilityMod.queueServerWork((int) (((LivingEntity) entity).getAttribute(GundurabilityModAttributes.HANDLING.get()).getValue() * 20), () -> {
+			Gundurability.queueServerWork((int) (((LivingEntity) entity).getAttribute(GundurabilityModAttributes.HANDLING.get()).getValue() * 20), () -> {
 				if ((ForgeRegistries.ITEMS.getKey((entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getItem()).toString()).equals("tacz:modern_kinetic_gun")
 						&& (entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().getBoolean("Jammed") == true) {
 					(entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().putBoolean("Jammed", false);

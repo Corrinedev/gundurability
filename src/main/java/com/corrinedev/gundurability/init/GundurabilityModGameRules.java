@@ -2,7 +2,7 @@
 /*
  *    MCreator note: This file will be REGENERATED on each build.
  */
-package net.corrinedev.gundurability.init;
+package com.corrinedev.gundurability.init;
 
 import net.minecraftforge.fml.common.Mod;
 

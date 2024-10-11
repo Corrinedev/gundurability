@@ -1,4 +1,4 @@
-package net.corrinedev.gundurability.init;
+package com.corrinedev.gundurability.init;
 
 import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
 import net.minecraftforge.fml.config.ModConfig;
@@ -6,15 +6,15 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import net.corrinedev.gundurability.configuration.ConfigConfiguration;
-import net.corrinedev.gundurability.GundurabilityMod;
+import com.corrinedev.gundurability.Config;
+import com.corrinedev.gundurability.Gundurability;
 
-@Mod.EventBusSubscriber(modid = GundurabilityMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = Gundurability.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class GundurabilityModConfigs {
 	@SubscribeEvent
 	public static void register(FMLConstructModEvent event) {
 		event.enqueueWork(() -> {
-			ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ConfigConfiguration.SPEC, "taczdurability.toml");
+			ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SPEC, "tacz-durability[SERVER].toml");
 		});
 	}
 }

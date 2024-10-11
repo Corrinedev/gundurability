@@ -1,5 +1,5 @@
 
-package net.corrinedev.gundurability.client.screens;
+package com.corrinedev.gundurability.client.screens;
 
 import org.checkerframework.checker.units.qual.h;
 
@@ -13,12 +13,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.client.Minecraft;
 
-import net.corrinedev.gundurability.procedures.YellowOverlayProcedure;
-import net.corrinedev.gundurability.procedures.ReturnOverlayProcedure;
-import net.corrinedev.gundurability.procedures.RedOverlayProcedure;
-import net.corrinedev.gundurability.procedures.OrangeOverlayProcedure;
-import net.corrinedev.gundurability.procedures.HoldingOverlayProcedure;
-import net.corrinedev.gundurability.procedures.DurabilityOverlayDisplayOverlayIngameProcedure;
+import com.corrinedev.gundurability.procedures.YellowOverlayProcedure;
+import com.corrinedev.gundurability.procedures.ReturnOverlayProcedure;
+import com.corrinedev.gundurability.procedures.RedOverlayProcedure;
+import com.corrinedev.gundurability.procedures.OrangeOverlayProcedure;
+import com.corrinedev.gundurability.procedures.HoldingOverlayProcedure;
+import com.corrinedev.gundurability.procedures.DurabilityOverlayDisplayOverlayIngameProcedure;
 
 @Mod.EventBusSubscriber({Dist.CLIENT})
 public class DurabilityOverlayOverlay {

@@ -1,4 +1,4 @@
-package net.corrinedev.gundurability.client.gui;
+package com.corrinedev.gundurability.client.gui;
 
 import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.player.Player;
@@ -9,9 +9,9 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.GuiGraphics;
 
-import net.corrinedev.gundurability.world.inventory.RepairGUIMenu;
-import net.corrinedev.gundurability.network.RepairGUIButtonMessage;
-import net.corrinedev.gundurability.GundurabilityMod;
+import com.corrinedev.gundurability.world.inventory.RepairGUIMenu;
+import com.corrinedev.gundurability.network.RepairGUIButtonMessage;
+import com.corrinedev.gundurability.Gundurability;
 
 import java.util.HashMap;
 
@@ -83,7 +83,7 @@ public class RepairGUIScreen extends AbstractContainerScreen<RepairGUIMenu> {
 		super.init();
 		button_apply_spraybrush = Button.builder(Component.translatable("gui.gundurability.repair_gui.button_apply_spraybrush"), e -> {
 			if (true) {
-				GundurabilityMod.PACKET_HANDLER.sendToServer(new RepairGUIButtonMessage(0, x, y, z));
+				Gundurability.PACKET_HANDLER.sendToServer(new RepairGUIButtonMessage(0, x, y, z));
 				RepairGUIButtonMessage.handleButtonAction(entity, 0, x, y, z);
 			}
 		}).bounds(this.leftPos + 34, this.topPos + 171, 114, 20).build();

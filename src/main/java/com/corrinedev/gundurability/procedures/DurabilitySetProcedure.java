@@ -1,5 +1,6 @@
-package net.corrinedev.gundurability.procedures;
+package com.corrinedev.gundurability.procedures;
 
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Entity;
@@ -21,6 +22,6 @@ public class DurabilitySetProcedure {
 					return null;
 				}
 			}
-		}.getEntity()) instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().putDouble("durability", (DoubleArgumentType.getDouble(arguments, "durability")));
+		}.getEntity()) instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().putInt("Durability", (IntegerArgumentType.getInteger(arguments, "durability")));
 	}
 }

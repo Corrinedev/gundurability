@@ -1,4 +1,4 @@
-package net.corrinedev.gundurability.procedures;
+package com.corrinedev.gundurability.procedures;
 
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -14,7 +14,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
 
-import net.corrinedev.gundurability.configuration.ConfigConfiguration;
+import com.corrinedev.gundurability.Config;
 
 public class DurabilityKeyProcedure {
 	public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
@@ -25,7 +25,7 @@ public class DurabilityKeyProcedure {
 				if (!((entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().getDouble("durability") == 0)) {
 					(entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().putDouble("durability",
 							((entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().getDouble("durability") - 1));
-					for (String stringiterator : ConfigConfiguration.SHOTGUNLIST.get()) {
+					for (String stringiterator : Config.SHOTGUNLIST.get()) {
 						if (((entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().getString("GunId")).equals(stringiterator)) {
 							(entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().putDouble("durability",
 									((entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().getDouble("durability") + 1));
@@ -33,7 +33,7 @@ public class DurabilityKeyProcedure {
 									((entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().getDouble("durability") - 0.1));
 						}
 					}
-					for (int index0 = 0; index0 < (int) (double) ConfigConfiguration.JAMCHANCE.get(); index0++) {
+					for (int index0 = 0; index0 < (int) (double) Config.JAMCHANCE.get(); index0++) {
 						if (Mth.nextInt(RandomSource.create(), 1, (int) ((entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().getDouble("durability"))) == 1) {
 							(entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().putBoolean("Jammed", true);
 							(entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().putInt("SavedAmmoCount",
@@ -49,7 +49,7 @@ public class DurabilityKeyProcedure {
 						}
 					}
 				} else {
-					if (ConfigConfiguration.GUNSBREAK.get() == true) {
+					if (Config.GUNSBREAK.get() == true) {
 						(entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).shrink(1);
 						(entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).setCount(0);
 						if (entity instanceof Player _player && !_player.level().isClientSide())
@@ -80,7 +80,7 @@ public class DurabilityKeyProcedure {
 				}
 			} else {
 				(entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().putBoolean("hasdurability", true);
-				(entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().putDouble("durability", ((double) ConfigConfiguration.MAXDURABILITY.get()));
+				(entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().putDouble("durability", ((double) Config.MAXDURABILITY.get()));
 			}
 		}
 	}
