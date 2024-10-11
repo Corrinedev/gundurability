@@ -2,7 +2,6 @@
 package com.corrinedev.gundurability.command;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
-import org.checkerframework.checker.units.qual.s;
 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -16,9 +15,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.Commands;
 
-import com.corrinedev.gundurability.procedures.DurabilitySetProcedure;
-
-import com.mojang.brigadier.arguments.DoubleArgumentType;
+import com.corrinedev.gundurability.execution.DurabilitySetProcedure;
 
 @Mod.EventBusSubscriber
 public class RestoreDurabilityCommand {

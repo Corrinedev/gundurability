@@ -1,8 +1,6 @@
 
 package com.corrinedev.gundurability.client.screens;
 
-import org.checkerframework.checker.units.qual.h;
-
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -15,12 +13,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.Minecraft;
 
-import com.corrinedev.gundurability.procedures.YellowIconProcedure;
-import com.corrinedev.gundurability.procedures.RedIconProcedure;
-import com.corrinedev.gundurability.procedures.OrangeIconProcedure;
-import com.corrinedev.gundurability.procedures.JamIconProcedure;
-import com.corrinedev.gundurability.procedures.IconOverlayDisplayOverlayIngameProcedure;
-import com.corrinedev.gundurability.procedures.GreenIconProcedure;
+import com.corrinedev.gundurability.execution.YellowIconProcedure;
+import com.corrinedev.gundurability.execution.RedIconProcedure;
+import com.corrinedev.gundurability.execution.OrangeIconProcedure;
+import com.corrinedev.gundurability.execution.JamIconProcedure;
+import com.corrinedev.gundurability.execution.IconOverlayDisplayOverlayIngameProcedure;
+import com.corrinedev.gundurability.execution.GreenIconProcedure;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.platform.GlStateManager;

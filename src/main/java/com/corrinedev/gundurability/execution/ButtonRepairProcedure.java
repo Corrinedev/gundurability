@@ -1,4 +1,4 @@
-package com.corrinedev.gundurability.procedures;
+package com.corrinedev.gundurability.execution;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.inventory.Slot;

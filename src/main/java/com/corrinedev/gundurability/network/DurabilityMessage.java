@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.network.FriendlyByteBuf;
 
-import com.corrinedev.gundurability.procedures.DurabilityOnKeyPressedProcedure;
+import com.corrinedev.gundurability.execution.DurabilityOnKeyPressedProcedure;
 import com.corrinedev.gundurability.Gundurability;
 
 import java.util.function.Supplier;

@@ -1,8 +1,6 @@
 
 package com.corrinedev.gundurability.client.screens;
 
-import org.checkerframework.checker.units.qual.h;
-
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -13,12 +11,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.client.Minecraft;
 
-import com.corrinedev.gundurability.procedures.YellowOverlay2Procedure;
-import com.corrinedev.gundurability.procedures.ReturnOverlayNoNameProcedure;
-import com.corrinedev.gundurability.procedures.RedOverlay2Procedure;
-import com.corrinedev.gundurability.procedures.OrangeOverlay2Procedure;
-import com.corrinedev.gundurability.procedures.GreenOverlay2Procedure;
-import com.corrinedev.gundurability.procedures.DurabilityNoNameDisplayProcedure;
+import com.corrinedev.gundurability.execution.YellowOverlay2Procedure;
+import com.corrinedev.gundurability.execution.ReturnOverlayNoNameProcedure;
+import com.corrinedev.gundurability.execution.RedOverlay2Procedure;
+import com.corrinedev.gundurability.execution.OrangeOverlay2Procedure;
+import com.corrinedev.gundurability.execution.GreenOverlay2Procedure;
+import com.corrinedev.gundurability.execution.DurabilityNoNameDisplayProcedure;
 
 @Mod.EventBusSubscriber({Dist.CLIENT})
 public class DurabilityOverlayNoNameOverlay {

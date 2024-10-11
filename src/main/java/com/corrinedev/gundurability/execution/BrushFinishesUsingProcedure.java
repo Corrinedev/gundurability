@@ -1,4 +1,4 @@
-package com.corrinedev.gundurability.procedures;
+package com.corrinedev.gundurability.execution;
 
 import net.minecraftforge.registries.ForgeRegistries;
 

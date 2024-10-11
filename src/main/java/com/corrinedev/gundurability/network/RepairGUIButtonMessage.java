@@ -12,7 +12,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.core.BlockPos;
 
 import com.corrinedev.gundurability.world.inventory.RepairGUIMenu;
-import com.corrinedev.gundurability.procedures.ButtonRepairProcedure;
+import com.corrinedev.gundurability.execution.ButtonRepairProcedure;
 import com.corrinedev.gundurability.Gundurability;
 
 import java.util.function.Supplier;

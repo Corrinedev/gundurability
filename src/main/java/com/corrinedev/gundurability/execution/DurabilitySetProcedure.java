@@ -1,4 +1,4 @@
-package com.corrinedev.gundurability.procedures;
+package com.corrinedev.gundurability.execution;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.world.item.ItemStack;
@@ -9,7 +9,6 @@ import net.minecraft.commands.CommandSourceStack;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.arguments.DoubleArgumentType;
 
 public class DurabilitySetProcedure {
 	public static void execute(CommandContext<CommandSourceStack> arguments) {
