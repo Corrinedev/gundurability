@@ -1,5 +1,21 @@
 package com.corrinedev.gundurability.client.gui;
 
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.tacz.guns.api.item.IAmmo;
+import com.tacz.guns.api.item.IAttachment;
+import com.tacz.guns.api.item.IGun;
+import com.tacz.guns.client.gui.GunSmithTableScreen;
+import com.tacz.guns.client.renderer.item.GunSmithTableItemRenderer;
+import com.tacz.guns.client.resource.ClientAssetManager;
+import com.tacz.guns.client.resource.pojo.PackInfo;
+import com.tacz.guns.crafting.GunSmithTableRecipe;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.Inventory;
@@ -14,8 +30,12 @@ import com.corrinedev.gundurability.network.RepairGUIButtonMessage;
 import com.corrinedev.gundurability.Gundurability;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import org.apache.commons.lang3.StringUtils;
 
 public class RepairGUIScreen extends AbstractContainerScreen<RepairGUIMenu> {
 	private final static HashMap<String, Object> guistate = RepairGUIMenu.guistate;
@@ -42,18 +62,6 @@ public class RepairGUIScreen extends AbstractContainerScreen<RepairGUIMenu> {
 		this.renderBackground(guiGraphics);
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 		this.renderTooltip(guiGraphics, mouseX, mouseY);
-		if (mouseX > leftPos + 151 && mouseX < leftPos + 175 && mouseY > topPos + 9 && mouseY < topPos + 33)
-			guiGraphics.renderTooltip(font, Component.translatable("gui.gundurability.repair_gui.tooltip_wd40"), mouseX, mouseY);
-		if (mouseX > leftPos + 79 && mouseX < leftPos + 103 && mouseY > topPos + 63 && mouseY < topPos + 87)
-			guiGraphics.renderTooltip(font, Component.translatable("gui.gundurability.repair_gui.tooltip_gun"), mouseX, mouseY);
-		if (mouseX > leftPos + 115 && mouseX < leftPos + 139 && mouseY > topPos + 36 && mouseY < topPos + 60)
-			guiGraphics.renderTooltip(font, Component.translatable("gui.gundurability.repair_gui.tooltip_barrel"), mouseX, mouseY);
-		if (mouseX > leftPos + 79 && mouseX < leftPos + 103 && mouseY > topPos + 9 && mouseY < topPos + 33)
-			guiGraphics.renderTooltip(font, Component.translatable("gui.gundurability.repair_gui.tooltip_bolt"), mouseX, mouseY);
-		if (mouseX > leftPos + 43 && mouseX < leftPos + 67 && mouseY > topPos + 36 && mouseY < topPos + 60)
-			guiGraphics.renderTooltip(font, Component.translatable("gui.gundurability.repair_gui.tooltip_spring"), mouseX, mouseY);
-		if (mouseX > leftPos + 151 && mouseX < leftPos + 175 && mouseY > topPos + 63 && mouseY < topPos + 87)
-			guiGraphics.renderTooltip(font, Component.translatable("gui.gundurability.repair_gui.tooltip_brush"), mouseX, mouseY);
 	}
 
 	@Override
