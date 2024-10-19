@@ -1,23 +1,19 @@
 package com.corrinedev.events;
 
 import com.corrinedev.gundurability.Config;
+import com.corrinedev.gundurability.init.GundurabilityModGameRules;
 import com.corrinedev.gundurability.init.GundurabilityModSounds;
-import com.tacz.guns.api.event.common.GunReloadEvent;
 import com.tacz.guns.api.event.common.GunShootEvent;
-import com.tacz.guns.api.item.gun.AbstractGunItem;
-import com.tacz.guns.client.event.FirstPersonRenderGunEvent;
-import com.tacz.guns.client.renderer.item.GunSmithTableItemRenderer;
-import com.tacz.guns.item.ModernKineticGunItem;
-import net.minecraft.client.Minecraft;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.biome.Biomes;
-import net.minecraftforge.common.data.ForgeBiomeTagsProvider;
-import net.minecraftforge.common.world.ForgeBiomeModifiers;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -27,6 +23,7 @@ public class TaczEvents {
     public static void onShootEvent(GunShootEvent event) {
 
          if(event.getLogicalSide().isServer()) {
+
             //Biome modifier code start
              int biomeModifier = 0;
              if(event.getShooter().isUnderWater()) {
@@ -47,28 +44,40 @@ public class TaczEvents {
                  biomeModifier = Config.COLDBIOMEMODIFIER.get();
              }
 
+             //Biome modifier code end
 
-             if(event.getShooter().getMainHandItem().getTag().getBoolean("HasDurability") == true) {
-                 if(Mth.nextInt(RandomSource.create(), 1, biomeModifier) == 1 && !(biomeModifier == 0)) {
-                     if (event.getShooter().getMainHandItem().getTag().getString("GunFireMode").equals("BURST")) {
-                         event.getShooter().getMainHandItem().getTag().putInt("Durability", event.getShooter().getMainHandItem().getTag().getInt("Durability") - 6);
-                     } else {
-                         event.getShooter().getMainHandItem().getTag().putInt("Durability", event.getShooter().getMainHandItem().getTag().getInt("Durability") - 2);
-                     }
+             if(event.getShooter().getMainHandItem().getTag().contains("HasDurability")) {
+                 if(event.getShooter().getMainHandItem().getTag().getInt("Durability") != 0) {
+                         if (Mth.nextInt(RandomSource.create(), 1, biomeModifier) == 1 && !(biomeModifier == 0)) {
+                             if (event.getShooter().getMainHandItem().getTag().getString("GunFireMode").equals("BURST")) {
+                                 event.getShooter().getMainHandItem().getTag().putInt("Durability", event.getShooter().getMainHandItem().getTag().getInt("Durability") - 6);
+                             } else {
+                                 event.getShooter().getMainHandItem().getTag().putInt("Durability", event.getShooter().getMainHandItem().getTag().getInt("Durability") - 2);
+                             }
+                         } else {
+                             if (event.getShooter().getMainHandItem().getTag().getString("GunFireMode").equals("BURST")) {
+                                 event.getShooter().getMainHandItem().getTag().putInt("Durability", event.getShooter().getMainHandItem().getTag().getInt("Durability") - 3);
+                             } else {
+                                 event.getShooter().getMainHandItem().getTag().putInt("Durability", event.getShooter().getMainHandItem().getTag().getInt("Durability") - 1);
+                             }
+                         }
                  } else {
-                     if (event.getShooter().getMainHandItem().getTag().getString("GunFireMode").equals("BURST")) {
-                         event.getShooter().getMainHandItem().getTag().putInt("Durability", event.getShooter().getMainHandItem().getTag().getInt("Durability") - 3);
-                     } else {
-                         event.getShooter().getMainHandItem().getTag().putInt("Durability", event.getShooter().getMainHandItem().getTag().getInt("Durability") - 1);
+                     if(Config.JAMCHANCE.get() != 1) {
+                         event.getShooter().getMainHandItem().getOrCreateTag().putBoolean("Jammed", true);
+                         event.getShooter().getMainHandItem().getOrCreateTag().putInt("SavedAmmo", event.getShooter().getMainHandItem().getTag().getInt("GunCurrentAmmoCount"));
+                         event.getShooter().getMainHandItem().getOrCreateTag().putInt("GunCurrentAmmoCount", 0);
+                         event.getShooter().getMainHandItem().getOrCreateTag().putBoolean("BulletInBarrel", false);
+                         event.getShooter().playSound(GundurabilityModSounds.JAMSFX.get());
+                         Player player = (Player) event.getShooter();
+                         player.displayClientMessage(MutableComponent.create(Component.literal("Jammed!").getContents()).withStyle(ChatFormatting.RED), true);
                      }
                  }
              } else {
                  event.getShooter().getMainHandItem().getOrCreateTag().putBoolean("HasDurability", true);
-             event.getShooter().getMainHandItem().getOrCreateTag().putInt("Durability", Config.MAXDURABILITY.get());
+                 event.getShooter().getMainHandItem().getOrCreateTag().putInt("Durability", Config.MAXDURABILITY.get());
              }
 
-             if(!event.getShooter().getMainHandItem().getTag().getBoolean("Jammed")) {
-
+             if(!event.getShooter().getMainHandItem().getTag().getBoolean("Jammed") && Config.JAMCHANCE.get() != 1) {
                 if(Mth.nextInt(RandomSource.create(), -1, event.getShooter().getMainHandItem().getTag().getInt("Durability") / Config.JAMCHANCE.get()) == 0) {
 
                     event.getShooter().getMainHandItem().getOrCreateTag().putBoolean("Jammed", true);
@@ -76,11 +85,19 @@ public class TaczEvents {
                     event.getShooter().getMainHandItem().getOrCreateTag().putInt("GunCurrentAmmoCount", 0);
                     event.getShooter().getMainHandItem().getOrCreateTag().putBoolean("BulletInBarrel", false);
                     event.getShooter().playSound(GundurabilityModSounds.JAMSFX.get());
-                    assert Minecraft.getInstance().player != null;
-                    Minecraft.getInstance().player.displayClientMessage(Component.literal("Jammed!"), true);
+                    Player player = (Player) event.getShooter();
+                    player.displayClientMessage(MutableComponent.create(Component.literal("Jammed!").getContents()).withStyle(ChatFormatting.RED), true);
 
                 }
              }
          }
+        if (event.getShooter().getMainHandItem().getTag().getInt("Durability") <= 0) {
+            if(event.getShooter().level().getGameRules().getBoolean(GundurabilityModGameRules.GUNBREAK)) {
+                event.getShooter().getMainHandItem().setCount(0);
+                Player player = (Player) event.getShooter();
+                player.displayClientMessage(MutableComponent.create(Component.literal("Your gun broke!").getContents()).withStyle(ChatFormatting.YELLOW), true);
+                event.getShooter().level().playSound(null, event.getShooter().blockPosition(), SoundEvents.ANVIL_DESTROY, SoundSource.PLAYERS, 1f, 1f);
+            }
+        }
     }
 }
