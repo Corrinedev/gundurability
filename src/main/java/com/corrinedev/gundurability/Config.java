@@ -23,7 +23,7 @@ public class Config {
 		GUNSBREAK = BUILDER.comment("Do guns break or not").define("gunsbreak", false);
 		BUILDER.pop();
 		BUILDER.push("jamchance");
-		JAMCHANCE = BUILDER.comment("Set to zero to stop jamming entirely").define("jamchance", 20);
+		JAMCHANCE = BUILDER.comment("Set to 1 to stop jamming entirely, do NOT set below 1").define("jamchance", 20);
 		BUILDER.pop();
 		BUILDER.push("swampmodifier");
 		SWAMPBIOMEMODIFIER = BUILDER.comment("Jam chance increase, random value from 1 to the config value (increased number = lower multiplier)").define("swampmodifier", 2);

@@ -1,6 +1,7 @@
 
 package com.corrinedev.gundurability.command;
 
+import com.corrinedev.gundurability.Config;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 
 import net.minecraftforge.fml.common.Mod;
@@ -35,6 +36,7 @@ public class RestoreDurabilityCommand {
 						direction = entity.getDirection();
 
 					DurabilitySetProcedure.execute(arguments);
+					System.out.println(Config.JAMCHANCE.get());
 					return 0;
 				}))));
 	}
