@@ -1,5 +1,7 @@
 package com.corrinedev.gundurability.execution;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.minecraft.world.level.LevelAccessor;
@@ -22,11 +24,11 @@ public class InspectDurabilityOnKeyPressedProcedure {
 				if ((ForgeRegistries.ITEMS.getKey((entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getItem()).toString()).equals("tacz:modern_kinetic_gun")
 						&& (entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().getBoolean("Jammed") == true) {
 					(entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().putBoolean("Jammed", false);
-					(entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().putInt("GunCurrentAmmoCount",
-							((entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().getInt("SavedAmmo")));
-					(entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().putInt("SavedAmmo", 0);
+					//(entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().putInt("GunCurrentAmmoCount",
+					//		((entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().getInt("SavedAmmo")));
+					//(entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getOrCreateTag().putInt("SavedAmmo", 0);
 					if (entity instanceof Player _player && !_player.level().isClientSide())
-						_player.displayClientMessage(Component.literal("Jam Cleared"), true);
+						_player.displayClientMessage(MutableComponent.create(Component.literal("Jam Cleared").getContents()).withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.YELLOW), true);
 				}
 			});
 		}
