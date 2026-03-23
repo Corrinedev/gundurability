@@ -1,0 +1,13 @@
+{
+  "RepairItem": "#forge:ingots/copper",
+  "MaxDurability": 500,
+  "RepairCost": 4,
+  "XpCost": 0.25,
+  "Stats": [
+    {
+      "Type": "ADS",
+      "ReductionThreshold": 0.9,
+      "MaxReduction": 0.35
+    }
+  ]
+}

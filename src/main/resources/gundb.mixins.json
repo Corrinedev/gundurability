@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "mod.cdv.gdb.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "gundb.refmap.json",
+  "mixins": [
+    "AnvilMenuMixin",
+    "AttachmentItemMixin",
+    "ModernKineticGunMixin"
+  ],
+  "client": [
+    "InspectKeybindHook"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}
