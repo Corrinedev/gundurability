@@ -1,12 +1,16 @@
 package mod.cdv.gdb.resource;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Either;
 import com.tacz.guns.api.GunProperty;
 import com.tacz.guns.api.item.GunTabType;
 import com.tacz.guns.api.item.attachment.AttachmentType;
+import com.tacz.guns.config.PreLoadConfig;
 import mod.cdv.gdb.DataLookup;
+import mod.cdv.gdb.GunDurability;
 import mod.cdv.gdb.Util;
 import mod.cdv.gdb.network.NetworkHandler;
 import mod.cdv.gdb.network.SyncGunModifiersPacket;
@@ -17,15 +21,23 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.*;
 import java.util.*;
+import java.util.stream.Stream;
 
 import static com.tacz.guns.api.item.GunTabType.*;
 
 public class ResourceLoader extends SimpleJsonResourceReloadListener {
     public static final ResourceLoader INSTANCE = new ResourceLoader();
+    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     public ResourceLoader() {
         super(new Gson(), "gundb");
@@ -99,9 +111,8 @@ public class ResourceLoader extends SimpleJsonResourceReloadListener {
 
             //jam
             boolean jam = root.has("Jam") && root.get("Jam").getAsBoolean();
-            float jamChance = root.has("JamChance") ? root.get("JamChance").getAsFloat() : 0.05f;
-            float jamThreshold = root.has("JamThreshold") ? root.get("JamThreshold").getAsFloat() : 0.65f;
-            int jamTimeMS = root.has("JamTimeMS") ? root.get("JamTimeMS").getAsInt() : 2000;
+            float jamChance = root.has("JamChance") ? root.get("JamChance").getAsFloat() : 0.2f;
+            float jamThreshold = root.has("JamThreshold") ? root.get("JamThreshold").getAsFloat() : 0.85f;
 
             //repair item
             Ingredient repairItem;
@@ -147,8 +158,7 @@ public class ResourceLoader extends SimpleJsonResourceReloadListener {
                             preventFiring,
                             jam,
                             jamChance,
-                            jamThreshold,
-                            jamTimeMS
+                            jamThreshold
                     )
             );
         });
@@ -159,5 +169,72 @@ public class ResourceLoader extends SimpleJsonResourceReloadListener {
         DataLookup.gunModifiers.addAll(finalModifiers);
         if(ServerLifecycleHooks.getCurrentServer() != null)
             NetworkHandler.sendToAllClients(new SyncGunModifiersPacket(finalModifiers));
+    }
+
+    public static void extractFile(String sourceFilePathInsideJar, Path targetExternalPath) throws IOException {
+        try (InputStream inputStream = GunDurability.class.getResourceAsStream(sourceFilePathInsideJar)) {
+            if (inputStream == null) {
+                throw new IOException("File not found inside JAR: " + sourceFilePathInsideJar);
+            }
+
+            Path parentDir = targetExternalPath.getParent();
+            if (parentDir != null && !Files.exists(parentDir)) {
+                Files.createDirectories(parentDir);
+            }
+
+            Files.copy(inputStream, targetExternalPath, StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
+
+    public static void mergeFolderFromJar(String sourceFolderInsideJar, Path targetExternalFolder)
+            throws IOException, URISyntaxException {
+
+        // 1. Locate the folder inside the JAR
+        URI uri = GunDurability.class.getResource(sourceFolderInsideJar).toURI();
+
+        // 2. Handle extraction whether running inside a JAR or in an IDE development environment
+        if ("jar".equals(uri.getScheme())) {
+            // Mount the JAR as a virtual filesystem
+            try (FileSystem fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
+                Path sourcePath = fileSystem.getPath(sourceFolderInsideJar);
+                copyAndOverwriteMatching(sourcePath, targetExternalFolder);
+            }
+        } else {
+            Path sourcePath = Paths.get(uri);
+            copyAndOverwriteMatching(sourcePath, targetExternalFolder);
+        }
+    }
+
+    private static void copyAndOverwriteMatching(Path source, Path target) throws IOException {
+        try (Stream<Path> stream = Files.walk(source)) {
+            stream.forEach(sourcePath -> {
+                try {
+                    Path targetPath = target.resolve(source.relativize(sourcePath).toString());
+
+                    if (Files.isDirectory(sourcePath)) {
+                        Files.createDirectories(targetPath);
+                    } else {
+                        Files.createDirectories(targetPath.getParent());
+                        if(Files.exists(targetPath)) {
+                            var sourceObj = GSON.fromJson(Files.readString(sourcePath), JsonObject.class);
+                            var targetObj = GSON.fromJson(Files.readString(targetPath), JsonObject.class);
+
+                            var unjamObj = sourceObj.getAsJsonObject("animations").getAsJsonObject("unjam");
+                            var unjam_idleObj = sourceObj.getAsJsonObject("animations").getAsJsonObject("unjam_idle");
+
+                            targetObj.getAsJsonObject("animations").add("unjam", unjamObj);
+                            targetObj.getAsJsonObject("animations").add("unjam_idle", unjam_idleObj);
+
+                            Files.writeString(targetPath, GSON.toJson(targetObj));
+                        } else {
+                            System.out.println(targetPath + " does not exist!");
+                        }
+                        //Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException("Failed to copy/overwrite asset: " + sourcePath, e);
+                }
+            });
+        }
     }
 }

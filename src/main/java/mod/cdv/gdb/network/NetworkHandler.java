@@ -44,6 +44,11 @@ public class NetworkHandler {
                 .decoder(SyncDamageNBTPacket::decode)
                 .consumerMainThread(SyncDamageNBTPacket::handle)
                 .add();
+        INSTANCE.messageBuilder(UnjamPacket.class, id())
+                .encoder(UnjamPacket::encode)
+                .decoder(UnjamPacket::decode)
+                .consumerMainThread(UnjamPacket::handle)
+                .add();
     }
 
     public static void sendToClient(Object packet, ServerPlayer player) {

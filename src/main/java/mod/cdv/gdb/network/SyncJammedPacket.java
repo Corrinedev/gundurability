@@ -23,12 +23,6 @@ public record SyncJammedPacket(boolean jammed) {
             ItemStack item = Minecraft.getInstance().player.getMainHandItem();
             if(item.getTag() != null) {
                 item.getTag().putBoolean("Jammed", jammed);
-                Minecraft.getInstance().player.displayClientMessage(
-
-                        jammed ? Component.translatableWithFallback("gundb.text.jam","Jammed!") :
-                                Component.translatableWithFallback("gundb.text.unjam","Jam Cleared"),
-
-                        true);
             }
         });
         context.setPacketHandled(true);

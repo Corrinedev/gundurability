@@ -1,0 +1,13 @@
+{
+  "RepairItem": "#forge:ingots/copper",
+  "MaxDurability": 1500,
+  "RepairCost": 4,
+  "XpCost": 0.25,
+  "Stats": [
+    {
+      "Type": ["Recoil"],
+      "ReductionThreshold": 0.85,
+      "MaxReduction": 0.4
+    }
+  ]
+}

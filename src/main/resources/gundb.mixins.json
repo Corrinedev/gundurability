@@ -5,8 +5,12 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "gundb.refmap.json",
   "mixins": [
+    "AnimationControllerAccessor",
     "AnvilMenuMixin",
     "AttachmentItemMixin",
+    "ClientGunTooltipMixin",
+    "GunPackLoaderMixin",
+    "ScriptManagerMixin",
     "ModernKineticGunMixin"
   ],
   "client": [

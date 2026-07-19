@@ -44,7 +44,6 @@ public record SyncGunModifiersPacket(ArrayList<GunModifier> modifiers) {
             buf.writeBoolean(modifier.jam());
             buf.writeFloat(modifier.jamChance());
             buf.writeFloat(modifier.jamThreshold());
-            buf.writeInt(modifier.jamTimeMS());
         }
     }
 
@@ -77,9 +76,8 @@ public record SyncGunModifiersPacket(ArrayList<GunModifier> modifiers) {
             boolean jam = buf.readBoolean();
             float jamChance = buf.readFloat();
             float jamThreshold = buf.readFloat();
-            int jamTimeMS = buf.readInt();
 
-            modifiers.add(new GunModifier(enabled, statModifiers, repairItem, target, maxDurability, repairCost, xpCost, preventFiring, jam, jamChance, jamThreshold, jamTimeMS));
+            modifiers.add(new GunModifier(enabled, statModifiers, repairItem, target, maxDurability, repairCost, xpCost, preventFiring, jam, jamChance, jamThreshold));
         }
 
         return new SyncGunModifiersPacket(modifiers);

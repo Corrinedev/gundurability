@@ -1,9 +1,10 @@
 {
   "RepairItem": "#forge:ingots/iron",
   "MaxDurability": 1200,
-  "Jam": false,
+  "Jam": true,
   "RepairCost": 6,
   "XpCost": 1,
+  "JamChance": 0.25,
   "Stats": [
     {
       "Type": ["AmmoSpeed", "Inaccuracy"],

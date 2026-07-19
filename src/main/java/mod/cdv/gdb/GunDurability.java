@@ -1,17 +1,20 @@
 package mod.cdv.gdb;
 
-import com.tacz.guns.api.GunProperties;
 import com.tacz.guns.api.GunProperty;
 import com.tacz.guns.api.TimelessAPI;
+import com.tacz.guns.api.entity.IGunOperator;
 import com.tacz.guns.api.event.common.AttachmentPropertyEvent;
 import com.tacz.guns.api.event.common.GunFireEvent;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.api.item.attachment.AttachmentType;
 import com.tacz.guns.api.modifier.ParameterizedCachePair;
+import com.tacz.guns.api.resource.ResourceManager;
+import com.tacz.guns.item.AttachmentItem;
 import com.tacz.guns.item.ModernKineticGunItem;
-import com.tacz.guns.network.message.ServerMessageRefreshRefitScreen;
 import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
 import com.tacz.guns.resource.pojo.data.gun.*;
+import mod.cdv.gdb.init.ModItems;
+import mod.cdv.gdb.init.ModTabs;
 import mod.cdv.gdb.network.NetworkHandler;
 import mod.cdv.gdb.network.SyncDamageNBTPacket;
 import mod.cdv.gdb.network.SyncGunModifiersPacket;
@@ -20,14 +23,19 @@ import mod.cdv.gdb.resource.GunModifier;
 import mod.cdv.gdb.resource.ResourceLoader;
 import mod.cdv.gdb.resource.StatModifier;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RecipesUpdatedEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AnvilUpdateEvent;
@@ -43,7 +51,10 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.util.*;
+import java.util.concurrent.Executor;
 import java.util.logging.Logger;
+
+import static mod.cdv.gdb.init.ModTabs.TAB;
 
 @Mod(GunDurability.MODID)
 public class GunDurability {
@@ -54,6 +65,8 @@ public class GunDurability {
     public GunDurability() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         MinecraftForge.EVENT_BUS.register(this);
+        //modEventBus.register(new ModItems());
+        //modEventBus.register(new ModTabs());
         MinecraftForge.EVENT_BUS.addListener(GunDurability::addReloadListeners);
         MinecraftForge.EVENT_BUS.addListener(GunDurability::fireEvent);
         MinecraftForge.EVENT_BUS.addListener(GunDurability::onPlayerLoggedIn);
@@ -88,6 +101,19 @@ public class GunDurability {
             }
         }
     }
+
+    //public void onRecipesUpdated(RecipesUpdatedEvent event) {
+    //    DataLookup.createPartData();
+
+    //    MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+    //    CreativeModeTab.ItemDisplayParameters params = new CreativeModeTab.ItemDisplayParameters(
+    //            server.getWorldData().enabledFeatures(),
+    //            false,
+    //            server.registryAccess()
+    //    );
+    //    TAB.buildContents(params);
+
+    //}
 
     public static void addReloadListeners(final AddReloadListenerEvent event) {
         event.addListener(ResourceLoader.INSTANCE);
@@ -147,18 +173,8 @@ public class GunDurability {
                 float durabilityPercent = ((float) item.getMaxDamage() - item.getDamageValue()) / item.getMaxDamage();
                 if (modifiers.jam() && durabilityPercent <= modifiers.jamThreshold()) {
 
-                    float chance = durabilityPercent;
-                    chance = Util.remap(
-                            chance,
-                            0.0f,                       // new_min: Maps to no reduction when at threshold
-                            modifiers.jamChance(),         // new_max: Maps to max reduction when broken
-                            modifiers.jamThreshold(),   // old_min: Start of degradation range
-                            0.0f                        // old_max: End of degradation range (broken)
-                    );
-                    float chance2 = chance;
-                    chance *= (float) Math.random();
-                    chance += chance2;
-                    if (chance > modifiers.jamChance()) {
+                    float chance = getJamPossibility(durabilityPercent, modifiers.jamChance(), modifiers.jamThreshold());
+                    if (Math.random() < chance) {
                         item.getTag().putBoolean("Jammed", true);
                         if (event.getShooter() instanceof ServerPlayer)
                             NetworkHandler.sendToClient(new SyncJammedPacket(true), (ServerPlayer) plr);
@@ -180,13 +196,29 @@ public class GunDurability {
             }
             for (var mod : attachmentModifiers.entrySet()) {
                 ItemStack aItem = mod.getKey();
-                GunModifier aMod = mod.getValue();
-                int dmg = aItem.getDamageValue() + 1;
-                aItem.setDamageValue(dmg);
+                AttachmentType type = ((AttachmentItem)aItem.getItem()).getType(aItem);
+                int dmg = switch (type) {
+                    case MUZZLE, STOCK, GRIP -> 1;
+                    case SCOPE -> IGunOperator.fromLivingEntity(event.getShooter()).getSynIsAiming() ? 1 : 0;
+                    case LASER -> plr.isCrouching() || plr.isVisuallyCrawling() ? 1 : 0;
+                    default -> 0;
+                };
+                int fdmg = aItem.getDamageValue() + dmg;
+                aItem.setDamageValue(fdmg);
                 if (event.getShooter() instanceof ServerPlayer sv)
-                    NetworkHandler.sendToClient(new SyncDamageNBTPacket(aItem, dmg), sv);
+                    NetworkHandler.sendToClient(new SyncDamageNBTPacket(aItem, fdmg), sv);
             }
         }
+    }
+
+    public static float getJamPossibility(float durabilityPercent, float jamChance, float jamThreshold) {
+        return Util.remap(
+                durabilityPercent,
+                0.00f,                       // new_min: Maps to no reduction when at threshold
+                jamChance,         // new_max: Maps to max reduction when broken
+                jamThreshold,   // old_min: Start of degradation range
+                0.0f                        // old_max: End of degradation range (broken)
+        );
     }
 
     public static void attachmentPropertyEvent(AttachmentPropertyEvent event) {

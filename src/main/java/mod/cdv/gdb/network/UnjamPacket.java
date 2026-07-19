@@ -8,13 +8,12 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public record StartJamWorkerPacket(int length) {
+public record UnjamPacket() {
     public void encode(FriendlyByteBuf buf) {
-        buf.writeInt(length);
     }
 
-    public static StartJamWorkerPacket decode(FriendlyByteBuf buf) {
-        return new StartJamWorkerPacket(buf.readInt());
+    public static UnjamPacket decode(FriendlyByteBuf buf) {
+        return new UnjamPacket();
     }
 
     public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
@@ -23,14 +22,13 @@ public record StartJamWorkerPacket(int length) {
             if(context.getSender() == null) return;
             var plr = context.getSender();
             var modifiers = DataLookup.getModifiers(plr.getMainHandItem());
-            if(modifiers != null)
-                GunDurability.jamWorker.put(plr, new TimedWork<>(length - 1 /* just in case */, p -> {
-                    var item = p.getMainHandItem();
-                    if (item.getTag() != null && item.getTag().contains("Jammed") && item.getTag().getBoolean("Jammed")) {
-                        item.getTag().putBoolean("Jammed", false);
-                        NetworkHandler.sendToClient(new SyncJammedPacket(false), plr);
-                    }
-                }));
+            if(modifiers != null) {
+                var item = plr.getMainHandItem();
+                if (item.getTag() != null && item.getTag().contains("Jammed") && item.getTag().getBoolean("Jammed")) {
+                    item.getTag().putBoolean("Jammed", false);
+                    NetworkHandler.sendToClient(new SyncJammedPacket(false), plr);
+                }
+            }
         });
         context.setPacketHandled(true);
     }

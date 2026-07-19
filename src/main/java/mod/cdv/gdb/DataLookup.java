@@ -5,7 +5,9 @@ import com.tacz.guns.api.item.GunTabType;
 import com.tacz.guns.api.item.attachment.AttachmentType;
 import com.tacz.guns.item.AttachmentItem;
 import com.tacz.guns.item.ModernKineticGunItem;
+import com.tacz.guns.resource.index.CommonAmmoIndex;
 import mod.cdv.gdb.resource.GunModifier;
+import mod.cdv.gdb.resource.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -16,10 +18,36 @@ public final class DataLookup {
 
     public static final ArrayList<GunModifier> gunModifiers = new ArrayList<>();
     public static final HashMap<ResourceLocation, GunModifier> modifierCache = new HashMap<>();
+    public static final HashMap<ResourceLocation, PartDefinition> partData = new HashMap<>();
 
     public static Map<ResourceLocation, GunModifier> getAllModifiersCache() {
         return new HashMap<>(modifierCache); // Return a copy
     }
+
+    public static void createPartData() {
+        partData.clear();
+        for (Map.Entry<ResourceLocation, CommonAmmoIndex> allCommonAmmoIndex : TimelessAPI.getAllCommonAmmoIndex()) {
+            partData.put(ResourceLocation.fromNamespaceAndPath("barrel", allCommonAmmoIndex.getKey().getPath()), PartDefinition.barrel(allCommonAmmoIndex.getKey()));
+
+            for (GunTabType value : GunTabType.values()) {
+                partData.put(ResourceLocation.fromNamespaceAndPath("bolt", allCommonAmmoIndex.getKey().getPath() + "_" + value.name().toLowerCase(Locale.ROOT)), PartDefinition.bolt(allCommonAmmoIndex.getKey(), value));
+            }
+        }
+
+        for (GunTabType value : GunTabType.values()) {
+            partData.put(ResourceLocation.fromNamespaceAndPath("trigger", value.name().toLowerCase(Locale.ROOT)), PartDefinition.trigger(value));
+        }
+    }
+
+    public static @Nullable PartDefinition getPartData(ItemStack itemStack) {
+        String partId = itemStack.getTag().getString("PartId");
+        return partData.get(ResourceLocation.parse(partId));
+    }
+
+    public static @Nullable PartDefinition getPartData(ResourceLocation partId) {
+        return partData.get(partId);
+    }
+
     public static ArrayList<GunModifier> getAllModifiers() {
         return new ArrayList<>(gunModifiers); // Return a copy
     }

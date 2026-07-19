@@ -19,8 +19,7 @@ public record GunModifier(
         boolean preventFiring,
         boolean jam,
         float jamChance,
-        float jamThreshold,
-        int jamTimeMS
+        float jamThreshold
 ) {
     public static GunModifier createDisabled(Either<Either<GunTabType, AttachmentType>, ResourceLocation> target) {
         return new GunModifier(target);
@@ -37,15 +36,14 @@ public record GunModifier(
             boolean preventFiring,
             boolean jam,
             float jamChance,
-            float jamThreshold,
-            int jamTimeMS
+            float jamThreshold
     ) {
-        this(true, modifiers, repairItem, target, maxDurability, repairCost, xpCost, preventFiring, jam, jamChance, jamThreshold, jamTimeMS);
+        this(true, modifiers, repairItem, target, maxDurability, repairCost, xpCost, preventFiring, jam, jamChance, jamThreshold);
     }
 
     //Disabled GunModifier
     private GunModifier(Either<Either<GunTabType, AttachmentType>, ResourceLocation> target) {
-        this(false, new StatModifier[0], Ingredient.of(), target, 0, 0, 0, false, false, 0, 0, 0);
+        this(false, new StatModifier[0], Ingredient.of(), target, 0, 0, 0, false, false, 0, 0);
     }
     @Override
     public String toString() {
@@ -59,7 +57,6 @@ public record GunModifier(
                 ", jam=" + jam +
                 ", jamChance=" + jamChance +
                 ", jamThreshold=" + jamThreshold +
-                ", jamTimeMS=" + jamTimeMS +
                 '}';
     }
 }
