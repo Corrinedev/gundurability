@@ -222,7 +222,10 @@ public class ResourceLoader extends SimpleJsonResourceReloadListener {
                             var unjamObj = sourceObj.getAsJsonObject("animations").getAsJsonObject("unjam");
                             var unjam_idleObj = sourceObj.getAsJsonObject("animations").getAsJsonObject("unjam_idle");
 
+                            // overwrite animations if they already exist
+                            targetObj.getAsJsonObject("animations").remove("unjam");
                             targetObj.getAsJsonObject("animations").add("unjam", unjamObj);
+                            targetObj.getAsJsonObject("animations").remove("unjam_idle");
                             targetObj.getAsJsonObject("animations").add("unjam_idle", unjam_idleObj);
 
                             Files.writeString(targetPath, GSON.toJson(targetObj));

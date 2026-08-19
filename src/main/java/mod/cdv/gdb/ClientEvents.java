@@ -1,6 +1,7 @@
 package mod.cdv.gdb;
 
 import com.tacz.guns.api.TimelessAPI;
+import com.tacz.guns.api.client.animation.ObjectAnimation;
 import com.tacz.guns.api.client.animation.statemachine.LuaAnimationStateMachine;
 import com.tacz.guns.api.event.common.GunShootEvent;
 import com.tacz.guns.api.item.IGun;

@@ -1,8 +1,8 @@
 {
   "RepairItem": "#forge:ingots/copper",
   "MaxDurability": 800,
-  "Jam": true,
-  "JamChance": 0.25,
+  "Jam": false,
+  "JamChance": 0.15,
   "RepairCost": 16,
   "XpCost": 0.25,
   "Stats": [

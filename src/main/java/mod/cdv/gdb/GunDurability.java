@@ -102,18 +102,17 @@ public class GunDurability {
         }
     }
 
-    //public void onRecipesUpdated(RecipesUpdatedEvent event) {
-    //    DataLookup.createPartData();
-
-    //    MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-    //    CreativeModeTab.ItemDisplayParameters params = new CreativeModeTab.ItemDisplayParameters(
-    //            server.getWorldData().enabledFeatures(),
-    //            false,
-    //            server.registryAccess()
-    //    );
-    //    TAB.buildContents(params);
-
-    //}
+    //@SubscribeEvent
+    public void onRecipesUpdated(RecipesUpdatedEvent event) {
+        DataLookup.createPartData();
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        CreativeModeTab.ItemDisplayParameters params = new CreativeModeTab.ItemDisplayParameters(
+                server.getWorldData().enabledFeatures(),
+                false,
+                server.registryAccess()
+        );
+        TAB.buildContents(params);
+    }
 
     public static void addReloadListeners(final AddReloadListenerEvent event) {
         event.addListener(ResourceLoader.INSTANCE);
@@ -198,10 +197,10 @@ public class GunDurability {
                 ItemStack aItem = mod.getKey();
                 AttachmentType type = ((AttachmentItem)aItem.getItem()).getType(aItem);
                 int dmg = switch (type) {
-                    case MUZZLE, STOCK, GRIP -> 1;
+                    case MUZZLE, STOCK, GRIP, EXTENDED_MAG -> 1;
                     case SCOPE -> IGunOperator.fromLivingEntity(event.getShooter()).getSynIsAiming() ? 1 : 0;
                     case LASER -> plr.isCrouching() || plr.isVisuallyCrawling() ? 1 : 0;
-                    default -> 0;
+                    case NONE -> 0;
                 };
                 int fdmg = aItem.getDamageValue() + dmg;
                 aItem.setDamageValue(fdmg);
@@ -212,13 +211,15 @@ public class GunDurability {
     }
 
     public static float getJamPossibility(float durabilityPercent, float jamChance, float jamThreshold) {
-        return Util.remap(
-                durabilityPercent,
-                0.00f,                       // new_min: Maps to no reduction when at threshold
-                jamChance,         // new_max: Maps to max reduction when broken
-                jamThreshold,   // old_min: Start of degradation range
-                0.0f                        // old_max: End of degradation range (broken)
-        );
+        if (durabilityPercent >= jamThreshold) {
+            return 0.00f;
+        }
+
+        float progress = (durabilityPercent - jamThreshold) / (0.0f - jamThreshold);
+        progress = Math.max(0.0f, Math.min(1.0f, progress));
+        float easedProgress = progress * progress; //cubic easing
+
+        return jamChance * easedProgress;
     }
 
     public static void attachmentPropertyEvent(AttachmentPropertyEvent event) {

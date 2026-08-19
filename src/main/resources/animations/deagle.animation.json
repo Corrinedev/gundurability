@@ -1133,20 +1133,6 @@
 		"unjam_idle": {
 			"loop": true,
 			"bones": {
-				"lefthand": {
-					"rotation": [109.80512, -8.72735, -179.16691],
-					"position": [7.75, -17.2125, 5.15625],
-					"scale": [1, 1.5, 1]
-				},
-				"righthand": {
-					"rotation": [-264.97476, 6.2574, -176.94134],
-					"position": [-6.9125, -16.625, 5.8875],
-					"scale": [1, 1.5, 1]
-				},
-				"constraint": {
-					"rotation": [0.2, 0.2, 0.2],
-					"position": [0.2, 0.2, 0.2]
-				},
 				"slide2": {
 					"rotation": [0, 0, 0],
 					"position": [0, 0, 1]

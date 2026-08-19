@@ -6,7 +6,7 @@ modId = "${mod_id}" #mandatory
 version = "${mod_version}" #mandatory
 displayName = "${mod_name}" #mandatory
 # A file name (in the root of the mod JAR) containing a logo for display
-#logoFile="gundb.png" #optional
+logoFile="gundb_icon.png"
 authors = "${mod_authors}" #optional
 description = '''${mod_description}'''
 

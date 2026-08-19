@@ -539,37 +539,6 @@
 		"unjam_idle": {
 			"loop": true,
 			"bones": {
-				"righthand": {
-					"rotation": [-263.421, 6.29, -176.661],
-					"position": [-6.744, -13.076, 1.904],
-					"scale": [1, 1.5, 1]
-				},
-				"lefthand": {
-					"rotation": [-268.71719, -21.22826, 236.41998],
-					"position": [7.356, -14.697, 0.78],
-					"scale": [1, 1.5, 1]
-				},
-				"constraint": {
-					"rotation": [0.2, 0.2, 0.2],
-					"position": [0.2, 0.2, 0.2]
-				},
-				"hammer": {
-					"rotation": [0, 0, 0]
-				},
-				"root": {
-					"rotation": {
-						"0.0": {
-							"post": [0, 0, 0],
-							"lerp_mode": "catmullrom"
-						}
-					},
-					"position": {
-						"0.0": {
-							"post": [0, 0, 0],
-							"lerp_mode": "catmullrom"
-						}
-					}
-				},
 				"upper": {
 					"rotation": [0, 0, 0],
 					"position": [0, 0, 0.7]
@@ -577,14 +546,6 @@
 				"bullet_in_barrel": {
 					"rotation": [-35.4, 19.9322, -4.7628],
 					"position": [0, -0.2, 0.1]
-				},
-				"camera": {
-					"rotation": {
-						"0.0": {
-							"post": [0, 0, 0],
-							"lerp_mode": "catmullrom"
-						}
-					}
 				}
 			}
 		}

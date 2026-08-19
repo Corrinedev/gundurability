@@ -14,6 +14,7 @@ import com.tacz.guns.config.common.GunConfig;
 import com.tacz.guns.item.ModernKineticGunItem;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
 import com.tacz.guns.resource.pojo.data.gun.GunData;
+import mod.cdv.gdb.ClientEvents;
 import mod.cdv.gdb.DataLookup;
 import mod.cdv.gdb.network.NetworkHandler;
 import mod.cdv.gdb.network.StartJamWorkerPacket;
@@ -87,12 +88,10 @@ public class InspectKeybindHook {
                     } else {
                         SoundPlayManager.playInspectSound(player, gunIndex, noAmmo);
                         animationStateMachine.trigger("inspect");
-                        int length = (int) (((AnimationControllerAccessor) animationStateMachine.getAnimationController()).getPrototypes().get("inspect").getMaxEndTimeS() * 1000);
+                        int length = (int) (((AnimationControllerAccessor) animationStateMachine.getAnimationController()).getPrototypes().get("inspect").getMaxEndTimeS() * 800);
                         NetworkHandler.sendToServer(new StartJamWorkerPacket(length));
                     }
                 }
-
-
             });
         }
     }

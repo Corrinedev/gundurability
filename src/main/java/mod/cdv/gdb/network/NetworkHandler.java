@@ -49,6 +49,11 @@ public class NetworkHandler {
                 .decoder(UnjamPacket::decode)
                 .consumerMainThread(UnjamPacket::handle)
                 .add();
+        INSTANCE.messageBuilder(CancelReloadPacket.class, id())
+                .encoder(CancelReloadPacket::encode)
+                .decoder(CancelReloadPacket::decode)
+                .consumerMainThread(CancelReloadPacket::handle)
+                .add();
     }
 
     public static void sendToClient(Object packet, ServerPlayer player) {

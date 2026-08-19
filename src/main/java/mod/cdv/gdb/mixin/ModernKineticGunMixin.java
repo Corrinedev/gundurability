@@ -50,18 +50,22 @@ public class ModernKineticGunMixin extends Item {
         return modifiers != null && modifiers.repairItem().test(pRepairCandidate);
     }
 
-    @Override
-    public boolean overrideOtherStackedOnMe(ItemStack pStack, ItemStack pOther, Slot pSlot, ClickAction pAction, Player pPlayer, SlotAccess pAccess) {
-        //boolean isApplicable = getPartData(pStack).isApplicable(pSlot.getItem());
-
-        //ItemStack gunStack = pSlot.getItem();
-
-        //PartDefinition newPartDef = getPartData(pStack);
-        //ItemStack oldPart = getPartItem(gunStack, newPartDef.target());
-        //setPercentForPart(gunStack, newPartDef.target());
-        //pAccess.set(oldPart);
-        return super.overrideOtherStackedOnMe(pStack, pOther, pSlot, pAction, pPlayer, pAccess);
-    }
+    //@Override
+    //public boolean overrideOtherStackedOnMe(ItemStack pStack, ItemStack pOther, Slot pSlot, ClickAction pAction, Player pPlayer, SlotAccess pAccess) {
+    //    PartDefinition partData = getPartData(pOther);
+    //    System.out.println(partData);
+    //    if(partData != null)
+    //        System.out.println(partData.isApplicable(pSlot.getItem()));
+    //    if(partData != null && partData.isApplicable(pSlot.getItem())) {
+    //        ItemStack gunStack = pSlot.getItem();
+    //        ItemStack oldPart = getPartItem(gunStack, partData.target());
+    //        setPercentForPart(gunStack, partData.target());
+    //        pAccess.set(oldPart);
+//
+    //        System.out.println("slot set = " + partData);
+    //    }
+    //    return super.overrideOtherStackedOnMe(pStack, pOther, pSlot, pAction, pPlayer, pAccess);
+    //}
 
     @Override
     public boolean isEnchantable(ItemStack pStack) {

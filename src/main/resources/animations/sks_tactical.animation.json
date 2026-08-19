@@ -464,38 +464,8 @@
 		"unjam_idle": {
 			"loop": true,
 			"bones": {
-				"lefthand": {
-					"rotation": [105.21, -25.38, -150.16],
-					"position": [8.03, -15.15, -4.57],
-					"scale": [1, 1.5, 1]
-				},
-				"righthand": {
-					"rotation": [95.0274, 5.97708, -179.47516],
-					"position": [-6.95, -17.1, 9.825],
-					"scale": [1, 1.5, 1]
-				},
-				"root": {
-					"rotation": {
-						"0.0": {
-							"post": [0, 0, 0],
-							"lerp_mode": "catmullrom"
-						}
-					},
-					"position": {
-						"0.0": {
-							"post": [0, 0, 0],
-							"lerp_mode": "catmullrom"
-						}
-					}
-				},
-				"additional_magazine": {
-					"scale": 0
-				},
 				"bolt": {
 					"position": [0, 0, 1.1]
-				},
-				"bullet": {
-					"scale": 0
 				},
 				"bullet_in_barrel": {
 					"rotation": [-51.1347, 46.193, -28.3763],

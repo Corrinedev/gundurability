@@ -149,10 +149,7 @@ public record SyncGunModifiersPacket(ArrayList<GunModifier> modifiers) {
     public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
-            // Apply the modifiers on the client side
-            // You'll need to create a client-side storage similar to ServerLookup
             DataLookup.setModifiers(modifiers);
-            System.out.println("Client Modifiers:" + modifiers);
         });
         context.setPacketHandled(true);
     }

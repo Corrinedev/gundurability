@@ -3,6 +3,7 @@ package mod.cdv.gdb.network;
 import mod.cdv.gdb.DataLookup;
 import mod.cdv.gdb.GunDurability;
 import mod.cdv.gdb.TimedWork;
+import mod.cdv.gdb.Util;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -24,7 +25,7 @@ public record UnjamPacket() {
             var modifiers = DataLookup.getModifiers(plr.getMainHandItem());
             if(modifiers != null) {
                 var item = plr.getMainHandItem();
-                if (item.getTag() != null && item.getTag().contains("Jammed") && item.getTag().getBoolean("Jammed")) {
+                if (Util.getOrSetTag(item, "Jammed", false)) {
                     item.getTag().putBoolean("Jammed", false);
                     NetworkHandler.sendToClient(new SyncJammedPacket(false), plr);
                 }

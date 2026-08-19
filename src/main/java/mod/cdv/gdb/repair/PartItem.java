@@ -2,6 +2,7 @@ package mod.cdv.gdb.repair;
 
 import com.tacz.guns.api.TimelessAPI;
 import mod.cdv.gdb.DataLookup;
+import mod.cdv.gdb.Util;
 import mod.cdv.gdb.init.ModItems;
 import mod.cdv.gdb.resource.PartDefinition;
 import net.minecraft.nbt.CompoundTag;
@@ -26,6 +27,15 @@ public class PartItem extends Item {
     public static @Nullable PartDefinition getPartData(ItemStack itemStack) {
         return DataLookup.getPartData(itemStack);
     }
+    @Override
+    public int getBarWidth(ItemStack pStack) {
+        return Math.round(12.0F - Util.getOrSetTag(pStack, "PartDamage", 1.0f) * 13.0F);
+    }
+
+    @Override
+    public boolean isBarVisible(ItemStack pStack) {
+        return Util.getOrSetTag(pStack, "PartDamage", 0.0f) < 1.0f;
+    }
 
     @Override
     public Object getRenderPropertiesInternal() {
@@ -45,7 +55,9 @@ public class PartItem extends Item {
             gunStack.getOrCreateTag().put("PartData", defaultTag);
         }
 
-        //TODO: Finish
+        CompoundTag partData = gunStack.getTag().getCompound("PartData");
+
+
     }
 
     public static ItemStack getPartItem(ItemStack gunStack, PartDefinition.PartType partType) {
@@ -60,6 +72,7 @@ public class PartItem extends Item {
     @Override
     public Component getName(ItemStack pStack) {
         PartDefinition def = DataLookup.getPartData(pStack);
+        if(def == null) return Component.literal("Invalid Part");
         return switch (def.target()) {
             case BARREL -> Component.translatable(TimelessAPI.getCommonAmmoIndex(def.ammoItem()).get().getPojo().getName()).append(Component.literal(" Barrel"));
             case TRIGGER -> Component.literal(def.tabType().name() + " Trigger");
