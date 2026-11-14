@@ -53,6 +53,7 @@ public final class DataLookup {
     }
 
     public static @Nullable GunModifier getModifiers(ItemStack item) {
+        if(!item.hasTag()) return null;
         if(item.getItem() instanceof AttachmentItem) return getAttachmentModifiers(item);
         if (item.getItem() instanceof ModernKineticGunItem) return getGunIdModifiers(item);
         return null;

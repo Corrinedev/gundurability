@@ -36,8 +36,10 @@ public abstract class ScriptManagerMixin {
     @Inject(method = "apply(Ljava/util/List;Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)V", at = @At("TAIL"))
     void patchDefaultScript(CallbackInfo ci) {
         LuaTable defaultScript = getScript(ResourceLocation.fromNamespaceAndPath("tacz", "default_state_machine"));
+        LuaTable defaultScript_v2 = getScript(ResourceLocation.fromNamespaceAndPath("tacz", "default_state_machine_v2"));
         LuaTable mk23Script = getScript(ResourceLocation.fromNamespaceAndPath("tacz", "hk_mk23_state_machine"));
         patchScript(defaultScript);
+        patchScript(defaultScript_v2);
         patchScript(mk23Script);
     }
 
@@ -170,7 +172,6 @@ public abstract class ScriptManagerMixin {
                                     context,
                                     track3
                             }));
-
                             NetworkHandler.sendToServer(new UnjamPacket());
                             return self.get("main_track_states").get("idle");
                         }

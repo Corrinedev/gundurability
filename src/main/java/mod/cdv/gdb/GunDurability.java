@@ -1,20 +1,15 @@
 package mod.cdv.gdb;
 
 import com.tacz.guns.api.GunProperty;
-import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.entity.IGunOperator;
 import com.tacz.guns.api.event.common.AttachmentPropertyEvent;
 import com.tacz.guns.api.event.common.GunFireEvent;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.api.item.attachment.AttachmentType;
-import com.tacz.guns.api.modifier.ParameterizedCachePair;
-import com.tacz.guns.api.resource.ResourceManager;
 import com.tacz.guns.item.AttachmentItem;
 import com.tacz.guns.item.ModernKineticGunItem;
 import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
 import com.tacz.guns.resource.pojo.data.gun.*;
-import mod.cdv.gdb.init.ModItems;
-import mod.cdv.gdb.init.ModTabs;
 import mod.cdv.gdb.network.NetworkHandler;
 import mod.cdv.gdb.network.SyncDamageNBTPacket;
 import mod.cdv.gdb.network.SyncGunModifiersPacket;
@@ -22,13 +17,10 @@ import mod.cdv.gdb.network.SyncJammedPacket;
 import mod.cdv.gdb.resource.GunModifier;
 import mod.cdv.gdb.resource.ResourceLoader;
 import mod.cdv.gdb.resource.StatModifier;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
@@ -51,7 +43,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.util.*;
-import java.util.concurrent.Executor;
 import java.util.logging.Logger;
 
 import static mod.cdv.gdb.init.ModTabs.TAB;
@@ -217,7 +208,7 @@ public class GunDurability {
 
         float progress = (durabilityPercent - jamThreshold) / (0.0f - jamThreshold);
         progress = Math.max(0.0f, Math.min(1.0f, progress));
-        float easedProgress = progress * progress; //cubic easing
+        float easedProgress = progress * progress; //square easing
 
         return jamChance * easedProgress;
     }
@@ -239,8 +230,6 @@ public class GunDurability {
         if (modifier == null && attachmentModifiers.isEmpty()) return;
 
         var cache = event.getCacheProperty();
-        var gunId = ResourceLocation.parse(item.getTag().getString("GunId"));
-
 
         HashMap<GunProperty<?>, Float> combinedMultipliers = new HashMap<>();
         // For the base gun modifier (uses gun durability)
@@ -263,9 +252,10 @@ public class GunDurability {
         for (Map.Entry<GunProperty<?>, Float> entry : combinedMultipliers.entrySet()) {
             var reductionFactor = entry.getValue();
             var type = entry.getKey();
+
             switch (type.name()) {
                 case "pierce", "rpm" -> {
-                    GunProperty<Integer> intType = (GunProperty<Integer>) type;
+                    var intType = (GunProperty<Integer>) type;
                     float val = cache.getCache(intType);
                     cache.setCache(intType, Math.round(val * reductionFactor));
                 }
@@ -312,22 +302,7 @@ public class GunDurability {
                     ));
                 }
                 case "recoil" -> {
-                    var gunData = TimelessAPI.getCommonGunIndex(gunId).get().getGunData();
-                    GunRecoil recoil = gunData.getRecoil();
-                    var recoilType = (GunProperty<ParameterizedCachePair<Float, Float>>) type;
-
-                    ParameterizedCachePair<Float, Float> value;
-                    if (recoil == null) {
-                        value = ParameterizedCachePair.of(0.0F, 0.0F);
-                    } else {
-                        float pitch = getMaxInGunRecoilKeyFrame(recoil.getPitch());
-                        float yaw = getMaxInGunRecoilKeyFrame(recoil.getYaw());
-                        value = ParameterizedCachePair.of(
-                                pitch * reductionFactor,
-                                yaw * reductionFactor
-                        );
-                    }
-                    cache.setCache(recoilType, value);
+                    //moved to RecoilModifierMixin
                 }
             }
         }
@@ -347,7 +322,7 @@ public class GunDurability {
         }
     }
 
-    private static void applyModifier(StatModifier mod, float durabilityPercent, HashMap<GunProperty<?>, Float> combinedMultipliers) {
+    public static void applyModifier(StatModifier mod, float durabilityPercent, HashMap<GunProperty<?>, Float> combinedMultipliers) {
         if (durabilityPercent > mod.reductionThreshold()) return;
         float survivalFactor = Util.remap(durabilityPercent, 0.0f, mod.maxReduction(), mod.reductionThreshold(), 0.0f);
         survivalFactor = 1.0f - Math.max(0.0f, Math.min(survivalFactor, mod.maxReduction()));

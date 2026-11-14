@@ -8,12 +8,15 @@
     "AnimationControllerAccessor",
     "AnvilMenuMixin",
     "AttachmentItemMixin",
+    "AttachmentRenderMixin",
     "ClientGunTooltipMixin",
     "GunPackLoaderMixin",
-    "ScriptManagerMixin",
-    "ModernKineticGunMixin"
+    "ModernKineticGunMixin",
+    "RecoilModifierMixin",
+    "ScriptManagerMixin"
   ],
   "client": [
+    "GunRenderMixin",
     "InspectKeybindHook"
   ],
   "injectors": {

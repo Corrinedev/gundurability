@@ -8,6 +8,11 @@
       "Type": ["AmmoSpeed", "ArmorIgnore"],
       "ReductionThreshold": 0.85,
       "MaxReduction": 0.3
+    },
+    {
+      "Type": ["Recoil"],
+      "ReductionThreshold": 0.7,
+      "MaxReduction": 0.3
     }
   ]
 }

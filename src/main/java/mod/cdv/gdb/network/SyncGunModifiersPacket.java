@@ -1,6 +1,7 @@
 package mod.cdv.gdb.network;
 
 import com.mojang.datafixers.util.Either;
+import com.tacz.guns.api.GunProperties;
 import com.tacz.guns.api.GunProperty;
 import com.tacz.guns.api.item.GunTabType;
 import com.tacz.guns.api.item.attachment.AttachmentType;
@@ -101,7 +102,7 @@ public record SyncGunModifiersPacket(ArrayList<GunModifier> modifiers) {
 
         for (int i = 0; i < typeCount; i++) {
             String propName = buf.readUtf();
-            types[i] = GunProperty.of(propName, Object.class); // GunProperty will handle the type internally
+            types[i] = GunProperties.all().get(propName);
         }
 
         float reductionThreshold = buf.readFloat();

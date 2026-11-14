@@ -4,6 +4,9 @@ import com.tacz.guns.api.GunProperties;
 import com.tacz.guns.api.GunProperty;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
+import org.luaj.vm2.ast.Str;
+
+import java.util.Locale;
 
 import static com.tacz.guns.api.GunProperties.*;
 
@@ -29,7 +32,11 @@ public final class Util {
     }
 
     public static GunProperty<?> getGunProperty(String prop) {
-        return switch (prop.toLowerCase()) {
+        return GunProperties.all().getOrDefault(prop.toLowerCase(Locale.ROOT), getFallbackGunProperty(prop));
+    }
+
+    public static GunProperty<?> getFallbackGunProperty(String attempt) {
+        return switch (attempt.toLowerCase()) {
             case "ammospeed" -> AMMO_SPEED;
             case "weight" -> WEIGHT;
             case "damage" -> DAMAGE;
@@ -43,7 +50,7 @@ public final class Util {
             case "pierce" -> PIERCE;
             case "recoil" -> RECOIL;
             case "rpm" -> ROUNDS_PER_MINUTE;
-            default -> throw new IllegalStateException("Unexpected value: " + prop);
+            default -> throw new IllegalArgumentException("Gun Property " + attempt + " is illegal!");
         };
     }
 

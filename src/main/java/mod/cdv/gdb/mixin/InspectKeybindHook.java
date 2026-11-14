@@ -41,19 +41,20 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Mixin(value = InspectKey.class, remap = false)
 public class InspectKeybindHook {
-    @Inject(method = "onInspectPress", at = @At(value = "INVOKE", target = "Lcom/tacz/guns/api/client/gameplay/IClientPlayerGunOperator;inspect()V"), cancellable = true)
-    private static void keyPress(InputEvent.Key event, CallbackInfo ci) {
+    @Inject(method = "onInspectPress", at = @At(value = "HEAD"), cancellable = true)
+    private static void keyPress(CallbackInfoReturnable<Boolean> cir) {
         Player player = Minecraft.getInstance().player;
         if(player == null) return;
         ItemStack mainHandItem = player.getMainHandItem();
         GunModifier modifiers = DataLookup.getModifiers(mainHandItem);
         if(modifiers != null && mainHandItem.getItem() instanceof ModernKineticGunItem iGun && mainHandItem.getTag().getBoolean("Jammed")) {
+            System.out.println("unjam");
             gundurability$unjam(player, mainHandItem, iGun, modifiers);
-            ci.cancel();
+            cir.setReturnValue(true);
         }
     }
 
-    @Inject(method = "onInspectControllerPress", at = @At(value = "INVOKE", target = "Lcom/tacz/guns/api/client/gameplay/IClientPlayerGunOperator;inspect()V"), cancellable = true)
+    @Inject(method = "onInspectControllerPress", at = @At(value = "HEAD"), cancellable = true)
     private static void controllerPress(boolean isPress, CallbackInfoReturnable<Boolean> cir) {
         Player player = Minecraft.getInstance().player;
         if(player == null) return;
